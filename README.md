@@ -43,6 +43,8 @@ This will generate `swagger-api-docs.html` in your current directory. Open it in
 ## License
 MIT
 
+# Contribution
+- You can contribute to the project here [jirugutema/swagger-html](https://github.com/JiruGutema/swagger-html)
 ---
 
 Made with ❤️ by JiruGutema

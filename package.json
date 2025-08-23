@@ -14,5 +14,15 @@
 "bin": {
   "swagger-html": "./node.js"
 },
-"description": "CLI tool to export Swagger UI as a single offline HTML file (api-docs.html)"
+"description": "CLI tool to export Swagger UI as a single offline HTML file (api-docs.html)",
+"keywords": [
+  "swagger",
+  "openapi",
+  "cli",
+  "offline",
+  "docs",
+  "api",
+  "export",
+  "html"
+]
 }

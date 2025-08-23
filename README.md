@@ -13,7 +13,11 @@ Export your Swagger/OpenAPI docs as a single offline HTML file for easy sharing 
 ```bash
 npm install -g swagger-html
 ```
+You can find it here.
 
+```
+https://www.npmjs.com/package/swagger-html
+```
 ## Usage
 
 ```bash
@@ -28,9 +32,9 @@ swagger-html http://localhost:3000/api-docs
 
 This will generate `swagger-api-docs.html` in your current directory. Open it in your browser to view your API docs offline.
 
-## CLI Options
-
-- `-h`, `--help`  Show usage instructions
+<!-- ## CLI Options -->
+<!--  -->
+<!-- - `-h`, `--help`  Show usage instructions -->
 
 ## How it works
 - Fetches your Swagger UI's `swagger-ui-init.js` file

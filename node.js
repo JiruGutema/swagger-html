@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from "fs";
+import chalk from "chalk";
 import fetch from "node-fetch";
 
 
@@ -44,7 +45,7 @@ function makeHtmlWithSpec(spec) {
 
 (async () => {
   try {
-    console.log("🔄 Fetching swagger-ui-init.js...");
+    console.log(chalk.blue.bold("🔄 Fetching swagger-ui-init.js..."));
     const res = await fetch(swaggerInitUrl);
     const text = await res.text();
 
@@ -52,11 +53,13 @@ function makeHtmlWithSpec(spec) {
     const swaggerDocKey = '"swaggerDoc"';
     const swaggerDocIdx = text.indexOf(swaggerDocKey);
     if (swaggerDocIdx === -1) {
-      throw new Error("Could not find swaggerDoc key inside swagger-ui-init.js");
+      console.error(chalk.red.bold("❌ Could not find swaggerDoc key inside swagger-ui-init.js"));
+      process.exit(1);
     }
     let start = text.indexOf('{', swaggerDocIdx);
     if (start === -1) {
-      throw new Error("Could not find opening brace for swaggerDoc object");
+      console.error(chalk.red.bold("❌ Could not find opening brace for swaggerDoc object"));
+      process.exit(1);
     }
     let braceCount = 0;
     let end = start;
@@ -69,22 +72,24 @@ function makeHtmlWithSpec(spec) {
       }
     }
     if (braceCount !== 0) {
-      throw new Error("Could not find matching closing brace for swaggerDoc object");
+      console.error(chalk.red.bold("❌ Could not find matching closing brace for swaggerDoc object"));
+      process.exit(1);
     }
     const jsonText = text.slice(start, end);
     let json;
     try {
       json = JSON.parse(jsonText);
     } catch (e) {
-      throw new Error("Failed to parse swaggerDoc JSON: " + e.message);
+      console.error(chalk.red.bold("❌ Failed to parse swaggerDoc JSON: " + e.message));
+      process.exit(1);
     }
 
-  // Only output a single HTML file with the spec embedded
-  fs.writeFileSync("swagger-api-docs.html", makeHtmlWithSpec(json));
+    // Only output a single HTML file with the spec embedded
+    fs.writeFileSync("swagger-api-docs.html", makeHtmlWithSpec(json));
 
-  console.log("✅ Export complete!");
-  console.log("Open swagger-api-docs.html in your browser to view docs offline. No separate swagger.json needed.");
+    console.log(chalk.green.bold("✅ Export complete!"));
+    console.log(chalk.yellow.bold("Open swagger-api-docs.html in your browser to view docs offline. No separate swagger.json needed."));
   } catch (err) {
-    console.error("❌ Failed:", err.message);
+    console.error(chalk.red.bold("❌ Failed:"), chalk.red(err.message));
   }
 })();

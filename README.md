@@ -21,7 +21,7 @@ https://www.npmjs.com/package/swagger-html
 ## Usage
 
 ```bash
-swagger-html <swagger-ui-init.js-URL or base URL>
+swagger-html <base URL for your swagger docs>
 ```
 
 ### Example
@@ -48,7 +48,7 @@ This will generate `swagger-api-docs.html` in your current directory. Open it in
 MIT
 
 # Contribution
-- You can contribute to the project here [jirugutema/swagger-html](https://github.com/JiruGutema/swagger-html)
+- You can contribute to the project here [https://github.com/jirugutema/swagger-html](https://github.com/JiruGutema/swagger-html)
 ---
 
-Made with ❤️ by JiruGutema
+Developed by JiruGutema

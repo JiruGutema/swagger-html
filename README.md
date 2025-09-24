@@ -15,9 +15,9 @@ npm install -g swagger-html
 ```
 You can find it here.
 
-```
-https://www.npmjs.com/package/swagger-html
-```
+
+[https://www.npmjs.com/package/swagger-html](https://www.npmjs.com/package/swagger-html)
+
 ## Usage
 
 

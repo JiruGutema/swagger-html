@@ -2,9 +2,19 @@
 import fs from "fs";
 import chalk from "chalk";
 import fetch from "node-fetch";
+import { program } from "commander";
+import { outputOptions, versionOption } from "./options.js";
 
+program
+  .version("1.0.0")
+  .description("Generate a single HTML file with embedded Swagger/OpenAPI spec")
+  .option("-o, --output <file>", "Output HTML file", "swagger-api-docs.html")
+  .option("--versioned", "Use versioned Swagger UI assets", false)
+  .argument("<url>", "Swagger UI init.js URL or base URL")
+  .parse(process.argv);
 
-const inputArg = process.argv[2];
+const options = program.opts();
+const inputArg = program.args[0];
 if (!inputArg) {
   console.error("Usage: node node.js <swagger-ui-init.js-URL or base URL>");
   process.exit(1);
@@ -14,6 +24,8 @@ if (!swaggerInitUrl.endsWith('swagger-ui-init.js')) {
   swaggerInitUrl = swaggerInitUrl.replace(/\/+$/, '') + '/swagger-ui-init.js';
 }
 
+// Output file handling
+let outputFile = outputOptions(options.output);
 
 function makeHtmlWithSpec(spec) {
   return `<!DOCTYPE html>
@@ -84,11 +96,25 @@ function makeHtmlWithSpec(spec) {
       process.exit(1);
     }
 
-    // Only output a single HTML file with the spec embedded
-    fs.writeFileSync("swagger-api-docs.html", makeHtmlWithSpec(json));
+    // Adjust output file if versioned option is set
+    outputFile = versionOption(options.versioned, outputFile, json);
 
-    console.log(chalk.green.bold("✅ Export complete!"));
-    console.log(chalk.yellow.bold("Open swagger-api-docs.html in your browser to view docs offline. No separate swagger.json needed."));
+    // Only output a single HTML file with the spec embedded
+    try {
+      fs.writeFileSync(outputFile, makeHtmlWithSpec(json));
+
+      console.log(chalk.green.bold("✅ Export complete!"));
+      console.log(
+        chalk.yellow.bold(
+          `Open ${outputFile} in your browser to view docs offline. No separate swagger.json needed.`,
+        ),
+      );
+    } catch (e) {
+      console.error(
+        chalk.red.bold(`❌ Failed to write output file: ${e.message}`),
+      );
+      process.exit(1);
+    }
   } catch (err) {
     console.error(chalk.red.bold("❌ Failed:"), chalk.red(err.message));
   }
